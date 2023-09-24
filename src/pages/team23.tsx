@@ -3,7 +3,7 @@ import Link from "next/link"
 
 const Team23 = () => {
   return (
-    <Main title="Airbills Team Links">
+    <Main title="Airbills Team Secret Page">
       <div className="prose text-white my-6 prose-a:text-slate-300 prose-a:underline-offset-8">
 
         <ol className="text">
