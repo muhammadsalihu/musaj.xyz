@@ -8,7 +8,7 @@ const Team23 = () => {
 
         <ol className="text">
           <li>
-            <Link href={"https://www.notion.so/airbills/Formula-Airbills-6271f8ceca7d4d09a900654c311416ce"} target="_blank" className="underline underline-offset-8">
+            <Link href={"https://airbills.notion.site/Formula-Airbills-6271f8ceca7d4d09a900654c311416ce?pvs=4"} target="_blank" className="underline underline-offset-8">
               Formula Airbills Notion Page
             </Link>
           </li>
