@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Me from "public/images/me.jpg";
+// import Image from "next/image";
+// import Me from "public/images/me.jpg";
 // import Astronaut from "public/images/astronaut.jpg";
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
