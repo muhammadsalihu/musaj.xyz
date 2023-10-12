@@ -5,10 +5,10 @@ const About = () => {
     <Main title="About">
       <div className="prose text-white my-6 prose-a:text-slate-300 prose-a:underline-offset-8">
         <p>
-          Crafting my way through the interwebs of Ethereum and Communities; exploring infrastructure, tooling and relations. Currently working as web3/full stack developer at <a href="https://kernel.community/" target="_blank">Kernel</a>.
+          Building capacity for collective action through Deliberate Practice. Currently working as a Fullstack Developer at <a href="https://airbills.xyz/" target="_blank">Formula Airbills</a>.
         </p>
         <p>
-          Previously I have worked as a Full Stack Software Engineer at <a href="https://bonfire.xyz" target="_blank">Bonfire</a> (Aug 2021 - April 2023), Special Projects Lead at <a href="https://gitcoin.co" target="_blank">Gitcoin</a> (Oct 2020 - Sep 2021) and Blockchain Platform Engineer and a Dev Advocate at <a href="https://polygon.technology" target="_blank">Polygon</a> (Aug 2019 - Oct 2020).
+          Previously, I have worked as a Full Stack Software Engineer at <a href="https://buypower.ng" target="_blank">Buypower</a> (Sep 2021 - March 2022), Fullstack Engineer at <a href="https://motionwares.com" target="_blank">Motionwares</a> (Dec 2019 - July 2021) and Software Developer Interrn at <a href="https://formula.airbills.xyz" target="_blank">Purposeful</a> (July 2019 - Sept 2019).
         </p>
       </div>
     </Main>
