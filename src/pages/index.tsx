@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       <Main>
         <div className="flex flex-col gap-3 sm:px-4 sm:py-16">
           <div className="sm:text-[2rem] text-xl font-semibold">
-            "Become the best in the world at what you do. Keep redefining what you do until this is true" - Naval
+            "Productize Yourself"
           </div>
           <div className="flex flex-row gap-3 text-[1.5rem] w-full">
             <a href="https://twitter.com/iam_musaj" target="_blank" className="hover:scale-[1.08] transform transition duration-500" >
