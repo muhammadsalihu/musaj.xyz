@@ -12,7 +12,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Muhammad Salihu </title>
+        <title>Muhammad Salihu Abdullahi Jibril. </title>
         <meta name="description" content="Muhammad Salihu" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
