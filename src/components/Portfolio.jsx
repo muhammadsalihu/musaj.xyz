@@ -5,10 +5,11 @@ import {
   Rocket, Brain, GraduationCap, ChevronRight,
   Database, Beaker, Globe, Clock
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('services');
-
+  const navigate = useNavigate();
   const blogPosts = [
     {
       title: "F1 in Schools: Accelerating STEM Education",
@@ -91,7 +92,7 @@ const Portfolio = () => {
                 From Formula 1 to Software Engineering: Driving innovation in research and development
               </p>
               <div className="flex gap-4">
-                <button className="bg-red-600 text-white px-8 py-4 rounded-lg font-medium flex items-center hover:bg-red-700 transition">
+                <button  onClick={() => navigate('/agent')} className="bg-red-600 text-white px-8 py-4 rounded-lg font-medium flex items-center hover:bg-red-700 transition">
                   Hire Me <ChevronRight className="ml-2" />
                 </button>
                 <button className="border border-red-600 text-red-600 px-8 py-4 rounded-lg font-medium flex items-center hover:bg-red-600 hover:text-white transition">
