@@ -8,6 +8,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Portfolio />} />
       <Route path="/agent" element={<Agent />} />
+      {/* <Route path="/blog" element={<Blog />} /> */}
     </Routes>
   </Router>
   )
