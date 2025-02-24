@@ -5,13 +5,16 @@ import {
   CreditCard, Check, ArrowLeft, MessageSquare,
   Loader, Download, Clock
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
 
-const AgentMusaj = () => {
+const Agent = () => {
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [step, setStep] = useState('browse'); // browse, details, payment, processing, complete
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [inputText, setInputText] = useState('');
+  const navigate = useNavigate();
 
   const agents = [
     {
@@ -272,56 +275,100 @@ const AgentMusaj = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-black via-gray-900 to-red-900 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Bot className="w-8 h-8 text-red-600 mr-2" />
-              <span className="text-xl font-bold">Agent Musaj</span>
-            </div>
-            <button className="bg-red-600 px-4 py-2 rounded-lg">
-              Connect Wallet
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto p-6">
-        {step === 'browse' && (
-          <div className="relative mb-8">
-            <Search className="absolute left-4 top-3 text-gray-400" />
-            <input 
-              type="text"
-              placeholder="What kind of agent do you need?"
-              className="w-full bg-gray-900 border border-gray-800 rounded-lg py-3 px-12 focus:border-red-600 transition"
-            />
-          </div>
-        )}
-
-        {renderContent()}
-
-        {step === 'browse' && (
-          <div className="mt-12 grid grid-cols-3 gap-6">
-            <div className="bg-gray-900 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">2,431</div>
-              <div className="text-gray-400">Tasks Completed</div>
-            </div>
-            <div className="bg-gray-900 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">98%</div>
-              <div className="text-gray-400">Success Rate</div>
-            </div>
-            <div className="bg-gray-900 p-6 rounded-lg">
-              <div className="text-3xl font-bold text-red-600">1.2s</div>
-              <div className="text-gray-400">Avg Response Time</div>
+    <>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <header className="bg-gradient-to-r from-black via-gray-900 to-red-900 p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <button onClick={() => navigate('/')} className="text-gray-400 hover:text-white mr-6 flex items-center">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back to Home
+                </button>
+                <Bot className="w-8 h-8 text-red-600 mr-2" />
+                <span className="text-xl font-bold">Agent Musaj</span>
+              </div>
+              <button className="bg-red-600 px-4 py-2 rounded-lg">
+                Connect Wallet
+              </button>
             </div>
           </div>
-        )}
-      </main>
-    </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="max-w-7xl mx-auto p-6">
+          {step === 'browse' && (
+            <div className="mb-12 text-center">
+              <h1 className="text-4xl font-bold mb-4">AI <span className="text-red-600">Agents</span> Marketplace</h1>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Specialized AI agents trained to help with your Python development, data science, and research needs.
+              </p>
+            </div>
+          )}
+          
+          {step === 'browse' && (
+            <div className="relative mb-8 max-w-2xl mx-auto">
+              <Search className="absolute left-4 top-3 text-gray-400" />
+              <input 
+                type="text"
+                placeholder="What kind of agent do you need?"
+                className="w-full bg-gray-900 border border-gray-800 rounded-lg py-3 px-12 focus:border-red-600 transition"
+              />
+            </div>
+          )}
+
+          <div className="max-w-7xl mx-auto">
+            {renderContent()}
+          </div>
+
+          {step === 'browse' && (
+            <div className="mt-16 grid md:grid-cols-3 gap-6">
+              <div className="bg-gray-900 p-6 rounded-lg">
+                <div className="text-3xl font-bold text-red-600">2,431</div>
+                <div className="text-gray-400">Tasks Completed</div>
+              </div>
+              <div className="bg-gray-900 p-6 rounded-lg">
+                <div className="text-3xl font-bold text-red-600">98%</div>
+                <div className="text-gray-400">Success Rate</div>
+              </div>
+              <div className="bg-gray-900 p-6 rounded-lg">
+                <div className="text-3xl font-bold text-red-600">1.2s</div>
+                <div className="text-gray-400">Avg Response Time</div>
+              </div>
+            </div>
+          )}
+          
+          {step === 'browse' && (
+            <div className="mt-20 bg-gradient-to-r from-black to-red-900 p-8 rounded-lg">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                  <div className="md:w-2/3">
+                    <h2 className="text-2xl font-bold mb-4">Build Your Own Custom Agent</h2>
+                    <p className="text-gray-300 mb-4">
+                      Need a specialized AI agent tailored to your unique requirements? Contact me to discuss building a custom solution for your business or research needs.
+                    </p>
+                    <button 
+                      onClick={() => navigate('/contact')}
+                      className="bg-red-600 px-6 py-3 rounded-lg hover:bg-red-700 transition"
+                    >
+                      Get in Touch
+                    </button>
+                  </div>
+                  <div className="md:w-1/3">
+                    <div className="bg-black p-4 rounded-lg">
+                      <Brain className="w-24 h-24 text-red-600 mx-auto" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+      <Footer />
+    </>
   );
 };
 
-export default AgentMusaj;
+export default Agent;
