@@ -1,22 +1,18 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Portfolio from './components/Portfolio'
-import Agent from './components/Agent';
+import Portfolio from './components/Portfolio';
 import ProjectsSection from './components/ProjectsSection';
 import Contact from './components/Contact';
-import Blog from './components/Blog';
 
 function App() {
   return (
     <Router>
-    <Routes>
-      <Route path="/" element={<Portfolio />} />
-      <Route path="/agent" element={<Agent />} />
-      <Route path="/projects" element={<ProjectsSection />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/blog" element={<Blog />} />
-    </Routes>
-  </Router>
-  )
+      <Routes>
+        <Route path="/" element={<Portfolio />} />
+        <Route path="/projects" element={<ProjectsSection />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

@@ -1,48 +1,49 @@
 import React from 'react';
-import { Github, Linkedin, Twitter, Mail, ExternalLink } from 'lucide-react';
+import { Github, Linkedin, Twitter, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
   const navigate = useNavigate();
-  
   const currentYear = new Date().getFullYear();
-  
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
-    { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Agent', path: '/agent' }
   ];
-  
+
+  const serviceLinks = [
+    'React Native Mobile Development',
+    'AI Agent Development',
+    'Backend Services & Microservices',
+  ];
+
   const socialLinks = [
-    { name: 'GitHub', icon: <Github className="w-5 h-5" />, url: 'https://github.com/yourusername' },
-    { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://linkedin.com/in/yourusername' },
-    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://twitter.com/yourusername' },
-    { name: 'Email', icon: <Mail className="w-5 h-5" />, url: 'mailto:contact@musaj.xyz' }
+    { name: 'GitHub', icon: <Github className="w-5 h-5" />, url: 'https://github.com/musaj' },
+    { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://linkedin.com/in/musaj' },
+    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://twitter.com/musaj' },
+    { name: 'Email', icon: <Mail className="w-5 h-5" />, url: 'mailto:contact@musaj.space' },
   ];
 
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
+    <footer className="bg-dark border-t border-white/10 text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
           <div className="md:col-span-1">
-            <h2 className="text-2xl font-bold text-white mb-4">Musaj<span className="text-blue-600">.xyz</span></h2>
-            <p className="text-gray-400 mb-6">
-              Specializing in Python development, machine learning, and scalable backend solutions.
+            <h2 className="text-2xl font-bold mb-3">Musaj<span className="text-brand">.space</span></h2>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Fullstack Engineer building AI-powered platforms across Africa and beyond.
             </p>
           </div>
-          
-          {/* Navigation */}
+
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold text-white mb-4">Navigation</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">Navigation</h3>
             <ul className="space-y-2">
               {navLinks.map((link, index) => (
                 <li key={index}>
-                  <button 
+                  <button
                     onClick={() => navigate(link.path)}
-                    className="text-gray-400 hover:text-blue-600 transition"
+                    className="text-gray-300 hover:text-brand transition text-sm"
                   >
                     {link.name}
                   </button>
@@ -50,70 +51,37 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-          
-          {/* Services */}
+
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">Services</h3>
             <ul className="space-y-2">
-              <li>
-                <span className="text-gray-400">Backend Development</span>
-              </li>
-              <li>
-                <span className="text-gray-400">ML Model Development</span>
-              </li>
-              <li>
-                <span className="text-gray-400">Custom Python Solutions</span>
-              </li>
-              <li>
-                <span className="text-gray-400">AI Integration</span>
-              </li>
+              {serviceLinks.map((s, i) => (
+                <li key={i} className="text-gray-300 text-sm">{s}</li>
+              ))}
             </ul>
           </div>
-          
-          {/* Connect */}
+
           <div className="md:col-span-1">
-            <h3 className="text-lg font-semibold text-white mb-4">Connect</h3>
-            <div className="flex space-x-4 mb-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">Connect</h3>
+            <div className="flex gap-3">
               {socialLinks.map((social, index) => (
-                <a 
+                <a
                   key={index}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-gray-800 p-2 rounded-full text-gray-400 hover:text-blue-600 hover:bg-gray-700 transition"
+                  className="bg-white/10 p-2 rounded-full text-gray-300 hover:text-brand hover:bg-white/20 transition"
                   aria-label={social.name}
                 >
                   {social.icon}
                 </a>
               ))}
             </div>
-            <button 
-              onClick={() => navigate('/contact')}
-              className="text-blue-600 flex items-center hover:text-blue-500 transition"
-            >
-              Get in touch <ExternalLink className="ml-1 w-4 h-4" />
-            </button>
           </div>
         </div>
-        
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm">
-            © {currentYear} Musaj.xyz. All rights reserved.
-          </p>
-          <div className="mt-4 sm:mt-0 flex space-x-4 text-sm text-gray-500">
-            <button 
-              onClick={() => navigate('/privacy')}
-              className="hover:text-blue-600 transition"
-            >
-              Privacy Policy
-            </button>
-            <button 
-              onClick={() => navigate('/terms')}
-              className="hover:text-blue-600 transition"
-            >
-              Terms of Service
-            </button>
-          </div>
+
+        <div className="border-t border-white/10 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
+          <p>© {currentYear} Musaj.space. All rights reserved.</p>
         </div>
       </div>
     </footer>
