@@ -1,10 +1,33 @@
 import React, { useState } from 'react';
-import { Plus, Edit2, Trash2, X, Check, Zap, ZapOff, Bot } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Check, Zap, ZapOff, Bot, Download } from 'lucide-react';
 import { useAdmin } from '../AdminContext';
+import { MODELS } from '../../lib/openrouter';
 
-const MODELS = ['claude-sonnet-4-6', 'claude-opus-4-8', 'claude-haiku-4-5-20251001'];
+const DEFAULT_MODEL = MODELS[0].id;
+const EMPTY = { name: '', description: '', model: DEFAULT_MODEL, systemPrompt: '', price: '', features: '', category: '' };
 
-const EMPTY = { name: '', description: '', model: MODELS[0], systemPrompt: '', price: '', features: '', category: '' };
+const exportOpenClaw = (agent) => {
+  const skill = {
+    name: agent.name,
+    version: '1.0.0',
+    description: agent.description,
+    category: agent.category || 'general',
+    model: agent.model,
+    systemPrompt: agent.systemPrompt,
+    price: agent.price,
+    features: agent.features,
+    triggers: agent.features.slice(0, 3).map((f) => f.toLowerCase()),
+    channels: ['whatsapp', 'telegram'],
+    createdAt: agent.createdAt,
+  };
+  const blob = new Blob([JSON.stringify(skill, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${agent.name.toLowerCase().replace(/\s+/g, '-')}.openclaw.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+};
 
 const AgentForm = ({ initial = EMPTY, onSave, onCancel }) => {
   const [form, setForm] = useState({
@@ -23,7 +46,7 @@ const AgentForm = ({ initial = EMPTY, onSave, onCancel }) => {
   };
 
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 space-y-4">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1">Agent Name *</label>
@@ -39,7 +62,7 @@ const AgentForm = ({ initial = EMPTY, onSave, onCancel }) => {
           <input
             value={form.category}
             onChange={(e) => set('category', e.target.value)}
-            placeholder="e.g. Research, Code, Data"
+            placeholder="e.g. Research, Finance, Code"
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand bg-white"
           />
         </div>
@@ -63,7 +86,11 @@ const AgentForm = ({ initial = EMPTY, onSave, onCancel }) => {
             onChange={(e) => set('model', e.target.value)}
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand bg-white"
           >
-            {MODELS.map((m) => <option key={m} value={m}>{m}</option>)}
+            {MODELS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label} — {m.tag}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -89,17 +116,19 @@ const AgentForm = ({ initial = EMPTY, onSave, onCancel }) => {
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-600 mb-1">Features (one per line)</label>
+        <label className="block text-xs font-medium text-gray-600 mb-1">
+          Features / Capabilities (one per line — shown as quick-reply chips in chat)
+        </label>
         <textarea
           value={form.features}
           onChange={(e) => set('features', e.target.value)}
           rows={4}
-          placeholder={"Paper summarization\nKey findings extraction\nRelated work analysis"}
+          placeholder={"Summarize a document\nAnswer questions\nGenerate a report"}
           className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand bg-white resize-none"
         />
       </div>
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-3 pt-1">
         <button
           onClick={handleSave}
           className="flex items-center gap-2 bg-brand text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition"
@@ -128,7 +157,7 @@ const AgentsManager = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Agents</h2>
           <p className="text-gray-400 text-sm mt-0.5">
-            {agents.filter((a) => a.deployed).length} of {agents.length} agents deployed to site
+            {agents.filter((a) => a.deployed).length} of {agents.length} deployed · powered by OpenRouter
           </p>
         </div>
         <button
@@ -139,8 +168,24 @@ const AgentsManager = () => {
         </button>
       </div>
 
+      {/* Model legend */}
+      <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm mb-5">
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Available Models</p>
+        <div className="flex flex-wrap gap-2">
+          {MODELS.map((m) => (
+            <span key={m.id} className="text-xs bg-gray-50 border border-gray-200 text-gray-600 px-2 py-1 rounded-lg">
+              <span className="font-medium">{m.label}</span>
+              <span className="text-gray-400 ml-1">— {m.tag}</span>
+            </span>
+          ))}
+        </div>
+        <p className="text-xs text-gray-400 mt-3">
+          All models run via <span className="font-medium">OpenRouter</span>. Add <code className="bg-gray-100 px-1 rounded">VITE_OPENROUTER_API_KEY</code> to Vercel to activate.
+        </p>
+      </div>
+
       {adding && (
-        <div className="mb-6">
+        <div className="mb-5">
           <AgentForm
             onSave={(data) => { addAgent(data); setAdding(false); }}
             onCancel={() => setAdding(false)}
@@ -166,33 +211,39 @@ const AgentsManager = () => {
                 onCancel={() => setEditing(null)}
               />
             ) : (
-              <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex items-center gap-4">
                 <div className={`p-2.5 rounded-xl flex-shrink-0 ${agent.deployed ? 'bg-green-100' : 'bg-gray-100'}`}>
                   <Bot className={`w-5 h-5 ${agent.deployed ? 'text-green-600' : 'text-gray-400'}`} />
                 </div>
+
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-0.5">
                     <h3 className="font-semibold text-gray-900">{agent.name}</h3>
-                    <span
-                      className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-                        agent.deployed ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
-                      }`}
-                    >
+                    <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${agent.deployed ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                       {agent.deployed ? 'Deployed' : 'Inactive'}
                     </span>
                     {agent.category && (
-                      <span className="text-xs bg-brand-light text-brand px-2 py-0.5 rounded-full flex-shrink-0">
-                        {agent.category}
-                      </span>
+                      <span className="text-xs bg-brand-light text-brand px-2 py-0.5 rounded-full flex-shrink-0">{agent.category}</span>
                     )}
                   </div>
                   <p className="text-sm text-gray-500 truncate">{agent.description}</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-xs text-gray-400 font-mono">{agent.model}</span>
+                  <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+                    <span className="text-xs text-gray-400 font-mono truncate max-w-[200px]">{agent.model}</span>
                     {agent.price && <span className="text-xs text-gray-400">{agent.price}</span>}
+                    {agent.deployed && (
+                      <a
+                        href={`/agent/${agent.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-brand hover:underline"
+                      >
+                        /agent/{agent.id} ↗
+                      </a>
+                    )}
                   </div>
                 </div>
-                <div className="flex items-center gap-1 flex-shrink-0">
+
+                <div className="flex items-center gap-1 flex-shrink-0 flex-wrap justify-end">
                   <button
                     onClick={() => toggleDeploy(agent.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
@@ -203,6 +254,13 @@ const AgentsManager = () => {
                   >
                     {agent.deployed ? <Zap className="w-3.5 h-3.5" /> : <ZapOff className="w-3.5 h-3.5" />}
                     {agent.deployed ? 'Live' : 'Deploy'}
+                  </button>
+                  <button
+                    onClick={() => exportOpenClaw(agent)}
+                    title="Export as OpenClaw skill"
+                    className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-lg transition"
+                  >
+                    <Download className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => { setEditing(agent.id); setAdding(false); }}

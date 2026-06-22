@@ -3,6 +3,8 @@ import Portfolio from './components/Portfolio';
 import ProjectsSection from './components/ProjectsSection';
 import Contact from './components/Contact';
 import Blog from './components/Blog';
+import AgentHub from './components/AgentHub';
+import AgentChat from './components/AgentChat';
 import InvoiceAgent from './components/InvoiceAgent';
 import AdminApp from './admin/AdminApp';
 
@@ -14,7 +16,9 @@ function App() {
         <Route path="/projects" element={<ProjectsSection />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/agent" element={<InvoiceAgent />} />
+        <Route path="/agent" element={<AgentHub />} />
+        <Route path="/agent/invoice" element={<InvoiceAgent />} />
+        <Route path="/agent/:id" element={<AgentChat />} />
         <Route path="/my-admin/*" element={<AdminApp />} />
       </Routes>
     </Router>
