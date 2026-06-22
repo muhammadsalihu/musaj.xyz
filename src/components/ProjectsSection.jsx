@@ -1,60 +1,85 @@
 import React from 'react';
-import { ExternalLink, Video, Globe, Lock, ShoppingBag, FlaskConical } from 'lucide-react';
+import { ExternalLink, Video, Globe, Lock, ShoppingBag, FlaskConical, Code, Brain, Server, Database, Layers } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
-const projects = [
+const ICON_MAP = { Video, Globe, Lock, ShoppingBag, FlaskConical, Code, Brain, Server, Database, Layers };
+
+const ProjectIcon = ({ name, className }) => {
+  const Icon = ICON_MAP[name] || Code;
+  return <Icon className={className} />;
+};
+
+const DEFAULT_PROJECTS = [
   {
-    title: "Ultrapalace",
-    description: "Real-time livestreaming platform with multi-host rooms, live chat, and audience engagement features built for scale.",
-    tech: ["React Native", "Expo", "LiveKit", "Firebase"],
-    icon: <Video className="w-8 h-8 text-brand" />,
-    liveLabel: "Demo on request",
+    id: '1',
+    title: 'Ultrapalace',
+    description: 'Real-time livestreaming platform with multi-host rooms, live chat, and audience engagement features built for scale.',
+    tech: ['React Native', 'Expo', 'LiveKit', 'Firebase'],
+    icon: 'Video',
+    liveLabel: 'Demo on request',
     liveUrl: null,
-    category: "Mobile & Streaming",
+    category: 'Mobile & Streaming',
+    inProgress: false,
   },
   {
-    title: "Airbills Digital",
-    description: "Premium digital agency platform featuring a team portal, project showcase, blog, and a learning hub for clients.",
-    tech: ["React Native", "Node.js", "TypeScript"],
-    icon: <Globe className="w-8 h-8 text-brand" />,
-    liveLabel: "airbills.digital",
-    liveUrl: "https://airbills.digital",
-    category: "Platform",
+    id: '2',
+    title: 'Airbills Digital',
+    description: 'Premium digital agency platform featuring a team portal, project showcase, blog, and a learning hub for clients.',
+    tech: ['React Native', 'Node.js', 'TypeScript'],
+    icon: 'Globe',
+    liveLabel: 'airbills.digital',
+    liveUrl: 'https://airbills.digital',
+    category: 'Platform',
+    inProgress: false,
   },
   {
-    title: "T2Mobile Auth Service",
-    description: "Enterprise LDAP/Active Directory microservice powering authentication across telco platforms with high availability.",
-    tech: ["NestJS", "Docker", "AKS"],
-    icon: <Lock className="w-8 h-8 text-brand" />,
-    liveLabel: "Architecture on request",
+    id: '3',
+    title: 'T2Mobile Auth Service',
+    description: 'Enterprise LDAP/Active Directory microservice powering authentication across telco platforms with high availability.',
+    tech: ['NestJS', 'Docker', 'AKS'],
+    icon: 'Lock',
+    liveLabel: 'Architecture on request',
     liveUrl: null,
-    category: "Enterprise",
+    category: 'Enterprise',
+    inProgress: false,
   },
   {
-    title: "Umnafass",
-    description: "E-commerce platform for personalized gifts — browse, customize, and deliver meaningful products with seamless checkout.",
-    tech: ["Next.js", "Node.js", "MongoDB", "Stripe"],
-    icon: <ShoppingBag className="w-8 h-8 text-brand" />,
-    liveLabel: "Live",
+    id: '4',
+    title: 'Umnafass',
+    description: 'E-commerce platform for personalized gifts — browse, customize, and deliver meaningful products with seamless checkout.',
+    tech: ['Next.js', 'Node.js', 'MongoDB', 'Stripe'],
+    icon: 'ShoppingBag',
+    liveLabel: 'Live',
     liveUrl: null,
-    category: "E-commerce",
+    category: 'E-commerce',
+    inProgress: false,
   },
   {
-    title: "SimAgent",
-    description: "AI agent for physics simulation — leverages Claude API and Azure to automate complex simulation workflows. Built for Microsoft Hackathon 2026.",
-    tech: ["Python", "Claude API", "Azure"],
-    icon: <FlaskConical className="w-8 h-8 text-brand" />,
-    liveLabel: "In progress",
+    id: '5',
+    title: 'SimAgent',
+    description: 'AI agent for physics simulation — leverages Claude API and Azure to automate complex simulation workflows. Built for Microsoft Hackathon 2026.',
+    tech: ['Python', 'Claude API', 'Azure'],
+    icon: 'FlaskConical',
+    liveLabel: 'In progress',
     liveUrl: null,
-    category: "AI / Research",
+    category: 'AI / Research',
     inProgress: true,
   },
 ];
 
+const getProjects = () => {
+  try {
+    const stored = localStorage.getItem('musaj_projects');
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return DEFAULT_PROJECTS;
+};
+
 const ProjectsSection = () => {
   const navigate = useNavigate();
   const isStandalonePage = window.location.pathname === '/projects';
+  const projects = getProjects();
 
   return (
     <>
@@ -79,9 +104,11 @@ const ProjectsSection = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition group border border-transparent hover:border-brand/20 flex flex-col">
+              <div key={project.id || index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition group border border-transparent hover:border-brand/20 flex flex-col">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="bg-brand-light p-3 rounded-xl">{project.icon}</div>
+                  <div className="bg-brand-light p-3 rounded-xl">
+                    <ProjectIcon name={project.icon} className="w-8 h-8 text-brand" />
+                  </div>
                   {project.inProgress && (
                     <span className="text-xs font-semibold bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">In Progress</span>
                   )}
