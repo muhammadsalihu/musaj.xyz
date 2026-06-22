@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FolderKanban, FileText, Bot, ExternalLink, LogOut } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, FileText, Bot, ExternalLink, LogOut, Menu, X } from 'lucide-react';
 import { useAdmin } from './AdminContext';
 
 const NAV = [
@@ -10,16 +10,33 @@ const NAV = [
   { to: '/my-admin/agents', label: 'Agents', icon: Bot },
 ];
 
-const AdminLayout = () => {
+const Sidebar = ({ open, onClose }) => {
   const { logout } = useAdmin();
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <aside className="w-56 bg-gray-900 flex flex-col fixed h-full z-10">
-        <div className="px-5 py-5 border-b border-gray-800">
-          <p className="text-white font-bold">musaj.space</p>
-          <p className="text-gray-500 text-xs mt-0.5">Admin</p>
+    <>
+      {/* Backdrop (mobile only) */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar panel */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-56 bg-gray-900 flex flex-col z-30 transition-transform duration-200
+          ${open ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
+      >
+        <div className="px-5 py-5 border-b border-gray-800 flex items-center justify-between">
+          <div>
+            <p className="text-white font-bold">musaj.space</p>
+            <p className="text-gray-500 text-xs mt-0.5">Admin</p>
+          </div>
+          <button onClick={onClose} className="md:hidden text-gray-500 hover:text-white transition">
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5">
@@ -28,11 +45,10 @@ const AdminLayout = () => {
               key={to}
               to={to}
               end={end}
+              onClick={onClose}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
-                  isActive
-                    ? 'bg-brand text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                  isActive ? 'bg-brand text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
                 }`
               }
             >
@@ -61,10 +77,33 @@ const AdminLayout = () => {
           </button>
         </div>
       </aside>
+    </>
+  );
+};
 
-      <main className="ml-56 flex-1 p-8 min-h-screen">
-        <Outlet />
-      </main>
+const AdminLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <div className="flex-1 flex flex-col md:ml-56 min-w-0">
+        {/* Mobile top bar */}
+        <header className="md:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-gray-100 sticky top-0 z-10">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="text-gray-600 hover:text-gray-900 transition"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <span className="font-bold text-gray-900">musaj.space</span>
+        </header>
+
+        <main className="flex-1 p-4 md:p-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };

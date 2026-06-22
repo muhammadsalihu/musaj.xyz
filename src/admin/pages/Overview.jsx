@@ -25,14 +25,14 @@ const Overview = () => {
       <h2 className="text-2xl font-bold text-gray-900 mb-1">Overview</h2>
       <p className="text-gray-400 text-sm mb-8">Your site at a glance.</p>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-8">
         <StatCard label="Projects" value={projects.length} icon={FolderKanban} sub="listed on site" />
         <StatCard label="Blog Posts" value={blog.length} icon={FileText} sub={`${published} published`} />
         <StatCard label="Agents" value={agents.length} icon={Bot} sub={`${deployed} deployed`} />
         <StatCard label="Site" value="Live" icon={Globe} sub="musaj.space" />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <h3 className="font-semibold text-gray-900 mb-4">Recent Blog Posts</h3>
           {blog.length === 0 ? (
